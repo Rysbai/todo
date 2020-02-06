@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from app.models import User
 from app.serializers.user import RegistrationSerializer, LoginSerializer, UserSerializer
-from app.views.permissions import IsAdminUser
+from app.views.permissions import IsAdminUser, IsUserEmailConfirmed, IsOwnerOfToDo
 
 
 class RegistrationAPIView(APIView):
@@ -61,6 +61,8 @@ class LoginAPIView(APIView):
 
 
 class EmailConfirmView(APIView):
+    permission_classes = (AllowAny, )
+
     def get(self, request, token, *args, **kwargs):
         user = self._get_valid_user(token)
         user.is_email_confirmed = True
@@ -86,7 +88,7 @@ class EmailConfirmView(APIView):
 
 
 class UserListView(ListAPIView):
-    permission_classes = (IsAuthenticated, IsAdminUser, )
+    permission_classes = (IsAuthenticated, IsUserEmailConfirmed, IsAdminUser, )
     queryset = User.objects.filter(is_admin=False)
     serializer_class = UserSerializer
 
