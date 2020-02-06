@@ -1,0 +1,8 @@
+staticfiles/*
+media/*
+static/*
+.env
+db.sqlite3
+.venv/*
+.idea/
+*.pyc
