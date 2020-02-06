@@ -38,14 +38,17 @@ class JWTAuthentication(authentication.BaseAuthentication):
         try:
             payload = jwt.decode(token, settings.SECRET_KEY)
         except:
-            raise exceptions.AuthenticationFailed('INVALID_AUTH_TOKEN')
+            raise exceptions.AuthenticationFailed('user.token.invalid')
 
         try:
             user = User.objects.get(pk=payload['id'])
         except:
-            raise exceptions.AuthenticationFailed('USER_NOT_FOUND')
+            raise exceptions.AuthenticationFailed('user.not_found')
 
         if payload['exp'] < int(datetime.now().strftime('%s')):
-            raise exceptions.AuthenticationFailed('TOKEN_EXPIRED')
+            raise exceptions.AuthenticationFailed('user.token.expired')
+
+        if not user.is_email_confirmed:
+            raise exceptions.AuthenticationFailed('user.email.not_confirmed')
 
         return (user, token)

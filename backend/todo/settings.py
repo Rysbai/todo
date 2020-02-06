@@ -6,7 +6,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = (config('DEBUG') == 'True')
 ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
-
+HOST_NAME = config('HOST_NAME')
 
 # Application definition
 
@@ -116,3 +116,12 @@ REST_FRAMEWORK = {
     ),
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('SMTP_HOST')
+EMAIL_PORT = config('SMTP_PORT')
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config('SMTP_LOGIN')
+EMAIL_HOST_PASSWORD = config('SMTP_PASSWORD')
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

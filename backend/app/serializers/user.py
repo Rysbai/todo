@@ -32,18 +32,23 @@ class LoginSerializer(serializers.Serializer):
 
         if username is None:
             raise serializers.ValidationError(
-                'EMAIL_IS_REQUIRED'
+                'user.email.required'
             )
         if password is None:
             raise serializers.ValidationError(
-                'PASSWORD_IS_REQUIRED'
+                'user.password.required'
             )
 
         user = authenticate(username=username, password=password)
 
         if user is None:
             raise serializers.ValidationError(
-                'USER_NOT_FOUND_WITH_USERNAME_AND_PASSWORD'
+                'user.notFound'
+            )
+
+        if not user.is_email_confirmed:
+            raise serializers.ValidationError(
+                'user.email.notConfirmed'
             )
 
         return {

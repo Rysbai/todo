@@ -1,12 +1,19 @@
 from django.urls import path
 
 from app.views.todo import ToDoListCreateAPIView, ToDoRetrieveUpdateDeleteView
-from app.views.user import RegistrationAPIView, LoginAPIView, UserListView, RetrieveCurrentUserAPIView
+from app.views.user import (
+    RegistrationAPIView,
+    LoginAPIView,
+    UserListView,
+    RetrieveCurrentUserAPIView,
+    EmailConfirmView
+)
 
 
 urlpatterns = [
     path('users', UserListView.as_view()),
-    path('users/registration', RegistrationAPIView.as_view()),
+    path('users/signup', RegistrationAPIView.as_view()),
+    path('users/confirm_email/<str:token>', EmailConfirmView.as_view()),
     path('users/login', LoginAPIView.as_view()),
     path('users/current', RetrieveCurrentUserAPIView.as_view()),
 
