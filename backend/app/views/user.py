@@ -32,7 +32,7 @@ class RegistrationAPIView(APIView):
     def _send_confirm_link(self, token: str, email: str):
         subject = 'ToDo'
         context = {
-            'url': settings.HOST_NAME + '/users/confirm_email/' + token
+            'url': settings.HOST_NAME + '/api/users/confirm_email/' + token
         }
         send_mail(
             subject=subject,

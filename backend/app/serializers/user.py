@@ -20,6 +20,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
         read_only_fields = ('created_at', 'token')
 
 
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
+
+
 class LoginSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=255, read_only=True)
     username = serializers.CharField(max_length=255)

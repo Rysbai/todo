@@ -3,9 +3,9 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from app.models import ToDo, User
+from app.models import ToDo
 from app.serializers.todo import ToDoSerializer
-from app.views.permissions import IsAdminUser, IsOwnerOfToDo, IsUserEmailConfirmed
+from app.views.permissions import IsOwnerOfToDo, IsUserEmailConfirmed
 
 
 class ToDoListCreateAPIView(ListCreateAPIView):
