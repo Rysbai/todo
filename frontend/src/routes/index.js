@@ -12,8 +12,8 @@ export default class AppRouter extends Component{
       <Router history={history}>
         <div>
           <Switch>
-            <Route exact path={''} component={MainPage}/>
             <Route exact path={'/login'} component={SignInPage}/>
+            <Route exact path={''} component={MainPage}/>
           </Switch>
         </div>
       </Router>

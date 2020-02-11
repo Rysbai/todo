@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -25,6 +26,21 @@ class ToDoListCreateAPIView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        actual = request.query_params.get('actual', None)
+
+        if actual and actual == 'True':
+            todos = self.queryset.filter(user=user, is_done=False, finish_at__gte=timezone.now())
+        elif actual and actual == 'False':
+            todos = self.queryset.filter(user=user, is_done=True, finish_at__lte=timezone.now())
+        else:
+            todos = self.queryset.filter(user=user)
+
+        serializer = self.serializer_class(todos, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
 class ToDoRetrieveUpdateDeleteView(RetrieveUpdateDestroyAPIView):

@@ -14,16 +14,17 @@ class UserManager(BaseUserManager):
             username=username,
             email=self.normalize_email(email),
             name=name,
-            surname=surname
+            surname=surname,
         )
         user.set_password(password)
         user.save()
 
         return user
 
-    def create_superuser(self, username, password, email=None):
-        user = self.create_user(None, None, username, email, password)
+    def create_superuser(self, username, password, email='None'):
+        user = self.create_user('None', 'None', username, email, password)
         user.is_admin = True
+        user.is_staff = True
         user.save()
 
         return user
