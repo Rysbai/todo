@@ -24,6 +24,7 @@ import UserProfile from "../cards/UserProfile";
 export default () => {
   const [user, setUser] = React.useState();
   const [redirectToLogin, setRedirectToLogin] = React.useState(false);
+  const [redirectToMyUsers, setRedirectToMyUsers] = React.useState(false);
   const [newTodoTitle, setNewTodoTitle] = React.useState('');
   const [newTodoDescription, setNewTodoDescription] = React.useState('');
 
@@ -39,6 +40,12 @@ export default () => {
   const renderRedirectToLogin = () => {
     if (redirectToLogin){
       return <Redirect to={'login'}/>
+    }
+  };
+
+  const renderRedirectToMyUsers = () => {
+    if (redirectToMyUsers){
+      return <Redirect to={'/my_users'}/>
     }
   };
 
@@ -86,7 +93,6 @@ export default () => {
   };
 
   React.useEffect(() => {
-    console.log(showAll);
     api.getCurrentUser()
       .then((response) => {
         setUser(response.data);
@@ -178,6 +184,7 @@ export default () => {
   return (
     <MDBContainer className={'mt-4'}>
       {renderRedirectToLogin()}
+      {renderRedirectToMyUsers()}
       {!user || !user.is_email_confirmed ?
         <MDBCard>
           <MDBCardBody>
@@ -233,7 +240,7 @@ export default () => {
                       Show Actuals
                     </MDBBtn>
                   }
-
+                  {user.is_admin ? <MDBBtn size={'sm'} onClick={() => setRedirectToMyUsers(true)}>Show My Users</MDBBtn> : ''}
                 </MDBCardTitle>
                 <MDBTable btn fixed bordered>
                   <MDBTableHead columns={columns}/>

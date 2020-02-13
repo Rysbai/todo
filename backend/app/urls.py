@@ -1,6 +1,6 @@
 from django.urls import path
 
-from app.views.todo import ToDoListCreateAPIView, ToDoRetrieveUpdateDeleteView
+from app.views.todo import ToDoListCreateAPIView, ToDoRetrieveUpdateDeleteView, UserToDosListView
 from app.views.user import (
     RegistrationAPIView,
     LoginAPIView,
@@ -17,6 +17,7 @@ urlpatterns = [
     path('users/login', LoginAPIView.as_view()),
     path('users/current', RetrieveCurrentUserAPIView.as_view()),
 
+    path('users/<int:user_pk>/todos', UserToDosListView.as_view()),
     path('todos', ToDoListCreateAPIView.as_view()),
     path('todos/<int:pk>', ToDoRetrieveUpdateDeleteView.as_view()),
 ]

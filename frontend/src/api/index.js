@@ -18,10 +18,10 @@ export default {
     }
     return axios.get(url, {headers: {Authorization: `${AUTH_PREFIX} ${token}`}})
   },
-
-  getActualToDos: () => {
+  getUserToDos: (userId) => {
     const token = localStorage.getItem('token');
-    const url = MAIN_URL + '/api/todos?actual=True';
+    const url = MAIN_URL + `/api/users/${userId}/todos`;
+
     return axios.get(url, {headers: {Authorization: `${AUTH_PREFIX} ${token}`}})
   },
 
@@ -68,5 +68,13 @@ export default {
     const url = MAIN_URL + `/api/users/confirm_email/${key}`;
 
     return axios.get(url, {headers: {Authorization: `${AUTH_PREFIX} ${token}`}})
-  }
+  },
+
+  getAllUsers: () => {
+    const token = localStorage.getItem('token');
+    const url = MAIN_URL + `/api/users`;
+
+    return axios.get(url, {headers: {Authorization: `${AUTH_PREFIX} ${token}`}})
+  },
+
 }

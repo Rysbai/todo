@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from app.models import ToDo
 from app.serializers.todo import ToDoSerializer
-from app.views.permissions import IsOwnerOfToDo, IsUserEmailConfirmed
+from app.views.permissions import IsOwnerOfToDo, IsUserEmailConfirmed, IsAdminUser
 
 
 class ToDoListCreateAPIView(ListCreateAPIView):
@@ -41,6 +41,17 @@ class ToDoListCreateAPIView(ListCreateAPIView):
         serializer = self.serializer_class(todos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+class UserToDosListView(ListCreateAPIView):
+    queryset = ToDo.objects.all()
+    serializer_class = ToDoSerializer
+    permission_classes = (IsAuthenticated, IsAdminUser)
+
+    def get(self, request, user_pk, *args, **kwargs):
+        todos = self.queryset.filter(user_id=user_pk).order_by('is_done', 'finish_at')
+
+        serializer = self.serializer_class(todos, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ToDoRetrieveUpdateDeleteView(RetrieveUpdateDestroyAPIView):
