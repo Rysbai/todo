@@ -6,6 +6,13 @@ import api from '../../api/index';
 
 
 export default () => {
+  const token = localStorage.getItem('token');
+  const user = localStorage.getItem('user');
+
+  if (token && user){
+    return <Redirect to={''}/>
+  }
+
   const [login, setLogin] = React.useState();
   const [password, setPassword] = React.useState();
   const [loginSuccess, setIsLoginSuccess] = React.useState(false);
@@ -27,9 +34,10 @@ export default () => {
     api.login(login, password)
       .then(response => {
         const token = response.data.token;
+        setIsLoginSuccess(true);
 
         localStorage.setItem('token', token);
-        setIsLoginSuccess(true)
+        localStorage.setItem('user', JSON.stringify(response.data));
       })
 
       .catch(error => {

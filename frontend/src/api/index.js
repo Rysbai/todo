@@ -10,9 +10,12 @@ export default {
     return axios.post(url, {username, password});
   },
 
-  getToDos: () => {
+  getToDos: (actual) => {
     const token = localStorage.getItem('token');
     const url = MAIN_URL + '/api/todos';
+    if (actual){
+      return axios.get(url + '?actual=True', {headers: {Authorization: `${AUTH_PREFIX} ${token}`}})
+    }
     return axios.get(url, {headers: {Authorization: `${AUTH_PREFIX} ${token}`}})
   },
 
@@ -22,19 +25,13 @@ export default {
     return axios.get(url, {headers: {Authorization: `${AUTH_PREFIX} ${token}`}})
   },
 
-  getNotActualToDos: () => {
-    const token = localStorage.getItem('token');
-    const url = MAIN_URL + '/api/todos?actual=False';
-    return axios.get(url, {headers: {Authorization: `${AUTH_PREFIX} ${token}`}})
-  },
-
   setToDoStatus: (todo, isDone) => {
     const token = localStorage.getItem('token');
     const url = MAIN_URL + `/api/todos/${todo.id}`;
     const data = {
       ...todo,
       is_done: isDone
-    }
+    };
 
     return axios.put(url, data, {headers: {Authorization: `${AUTH_PREFIX} ${token}`}})
   },
@@ -43,8 +40,33 @@ export default {
   createTodo: (todo) => {
     const token = localStorage.getItem('token');
     const url = MAIN_URL + `/api/todos`;
-    console.log(todo)
 
     return axios.post(url, todo, {headers: {Authorization: `${AUTH_PREFIX} ${token}`}})
+  },
+
+  signup: (username, email, name, surname, password) => {
+    const url = MAIN_URL + '/api/users/signup';
+    const data = {
+      username,
+      email,
+      name,
+      surname,
+      password
+    };
+    return axios.post(url, data)
+  },
+
+  getCurrentUser: () => {
+    const token = localStorage.getItem('token');
+    const url = MAIN_URL + `/api/users/current`;
+
+    return axios.get(url, {headers: {Authorization: `${AUTH_PREFIX} ${token}`}})
+  },
+
+  confirmEmail: (key) => {
+    const token = localStorage.getItem('token');
+    const url = MAIN_URL + `/api/users/confirm_email/${key}`;
+
+    return axios.get(url, {headers: {Authorization: `${AUTH_PREFIX} ${token}`}})
   }
 }

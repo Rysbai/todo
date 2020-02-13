@@ -48,7 +48,4 @@ class JWTAuthentication(authentication.BaseAuthentication):
         if payload['exp'] < int(datetime.now().strftime('%s')):
             raise exceptions.AuthenticationFailed('user.token.expired')
 
-        if not user.is_email_confirmed:
-            raise exceptions.AuthenticationFailed('user.email.not_confirmed')
-
         return (user, token)

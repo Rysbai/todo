@@ -32,11 +32,11 @@ class ToDoListCreateAPIView(ListCreateAPIView):
         actual = request.query_params.get('actual', None)
 
         if actual and actual == 'True':
-            todos = self.queryset.filter(user=user, is_done=False, finish_at__gte=timezone.now())
+            todos = self.queryset.filter(user=user, is_done=False, finish_at__gte=timezone.now()).order_by('finish_at')
         elif actual and actual == 'False':
-            todos = self.queryset.filter(user=user, is_done=True, finish_at__lte=timezone.now())
+            todos = self.queryset.filter(user=user, is_done=True, finish_at__lte=timezone.now()).order_by('is_done', 'finish_at')
         else:
-            todos = self.queryset.filter(user=user)
+            todos = self.queryset.filter(user=user).order_by('is_done', 'finish_at')
 
         serializer = self.serializer_class(todos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

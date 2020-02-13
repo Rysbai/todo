@@ -16,8 +16,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id', 'name', 'surname', 'email', 'username',
-            'created_at', 'password', 'token', 'is_admin']
-        read_only_fields = ('created_at', 'token')
+            'created_at', 'password', 'token', 'is_admin', 'is_email_confirmed']
+        read_only_fields = ('created_at', 'token', 'is_email_confirmed')
 
 
     def create(self, validated_data):
@@ -58,7 +58,8 @@ class LoginSerializer(serializers.Serializer):
         return {
             'email': user.email,
             'username': user.username,
-            'token': user.token
+            'token': user.token,
+            'is_email_confirmed': user.is_email_confirmed
         }
 
 
@@ -68,5 +69,5 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'id', 'name', 'surname', 'email', 'username',
-            'created_at', 'password', 'is_admin'
+            'created_at', 'password', 'is_admin', 'is_email_confirmed'
         )
