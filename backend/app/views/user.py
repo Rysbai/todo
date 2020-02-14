@@ -3,6 +3,7 @@ from datetime import datetime
 import jwt
 from django.conf import settings
 from django.core.mail import send_mail
+from django.http import Http404
 from django.template import loader, Template, Context
 from rest_framework import status, exceptions
 from rest_framework.views import APIView
@@ -74,12 +75,12 @@ class EmailConfirmView(APIView):
         try:
             payload = jwt.decode(token, settings.SECRET_KEY)
         except:
-            raise exceptions.AuthenticationFailed('user.token.invalid')
+            raise Http404
 
         try:
             user = User.objects.get(pk=payload['id'])
         except:
-            raise exceptions.AuthenticationFailed('user.not_found')
+            raise Http404
 
         if payload['exp'] < int(datetime.now().strftime('%s')):
             raise exceptions.AuthenticationFailed('user.token.expired')
