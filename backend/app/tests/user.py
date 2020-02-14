@@ -7,6 +7,7 @@ from app.tests.data_set import UserTestDataSet
 
 TOKEN_PREFIX = "Bearer"
 
+
 class UserAPITest(TestCase):
     def equal_user_dicts(self, first, second):
         self.assertEqual(first['username'], second['username'])
@@ -15,8 +16,12 @@ class UserAPITest(TestCase):
         self.assertEqual(first['is_admin'], second['is_admin'])
         self.assertEqual(first['is_email_confirmed'], second['is_email_confirmed'])
 
+        if first.get('id', None) and second.get('id', None):
+            self.assertEqual(first['id'], second['id'])
+
     def test_should_sign_up_user(self):
         user_test_entity = UserTestDataSet()
+
         path = reverse('app:users_sign_up')
         data = user_test_entity.__dict__
 
@@ -26,8 +31,9 @@ class UserAPITest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.equal_user_dicts(data, body)
 
-    def test_should_not_email_confirmed(self):
+    def test_should_not_be_email_confirmed(self):
         user_test_entity = UserTestDataSet()
+
         path = reverse('app:users_sign_up')
         data = user_test_entity.__dict__
 

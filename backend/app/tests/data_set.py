@@ -13,7 +13,9 @@ class UserTestDataSet:
             is_staff=False,
             created_at=timezone.now(),
             is_email_confirmed=False,
-            password='password'
+            password='password',
+            *args,
+            **kwargs
     ):
         self.id = id
         self.username = username
@@ -25,3 +27,23 @@ class UserTestDataSet:
         self.created_at = created_at
         self.is_email_confirmed = is_email_confirmed
         self.password = password
+
+
+class ToDoTestDataSet:
+    def __init__(
+            self,
+            user_id,
+            name='name',
+            description='desction',
+            start_at=timezone.now(),
+            finish_at=timezone.now(),
+            is_done=False,
+            *args,
+            **kwargs
+    ):
+        self.user_id = user_id
+        self.name = name
+        self.description = description
+        self.start_at = start_at
+        self.finish_at = finish_at
+        self.is_done = is_done
