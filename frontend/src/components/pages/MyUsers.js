@@ -70,7 +70,7 @@ export default () => {
         const userRows = prepareUsersToRows(response.data);
         setUsers(userRows);
       })
-  });
+  }, []);
 
   return (
     <MDBContainer className={'mt-4'}>

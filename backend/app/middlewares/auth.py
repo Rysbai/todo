@@ -37,12 +37,12 @@ class JWTAuthentication(authentication.BaseAuthentication):
 
         try:
             payload = jwt.decode(token, settings.SECRET_KEY)
-        except:
+        except Exception:
             raise exceptions.AuthenticationFailed('user.token.invalid')
 
         try:
             user = User.objects.get(pk=payload['id'])
-        except:
+        except Exception:
             raise exceptions.AuthenticationFailed('user.not_found')
 
         if payload['exp'] < int(datetime.now().strftime('%s')):

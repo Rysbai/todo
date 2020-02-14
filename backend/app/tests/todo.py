@@ -64,7 +64,7 @@ class ToDoAPITest(TestCase):
         user.save()
         ToDoFactory.create_many(user, is_done=True, count=todos_count)
 
-        path = reverse('app:todos_list_create') + '?actual=True'
+        path = reverse('app:todos_list_create', actual=True)
         headers = {
             "HTTP_AUTHORIZATION": TOKEN_PREFIX + ' ' + user.token
         }

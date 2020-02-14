@@ -71,7 +71,7 @@ export default (props) => {
         const toDoRows = getToDoRows(response.data);
         setToDos(toDoRows);
       })
-  });
+  }, []);
 
   return (
     <MDBContainer className={'mt-4'}>

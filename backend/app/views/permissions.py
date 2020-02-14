@@ -10,7 +10,6 @@ class IsAdminUser(BasePermission):
 class IsOwnerOfToDo(BasePermission):
 
     def has_object_permission(self, request, view, obj):
-        print(request.user.id)
         return obj.user == request.user
 
 
